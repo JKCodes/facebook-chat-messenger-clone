@@ -66,6 +66,19 @@ extension FriendsController {
         
         createMessage(text: "Hello, I am the the current president of the United States", friend: donald, minutesAgo: 6, context: context)
         
+        let gandhi = NSEntityDescription.insertNewObject(forEntityName: "Friend", into: context) as! Friend
+        gandhi.name = "Mahatma Gandhi"
+        gandhi.profileImageName = "gandhi"
+        
+        createMessage(text: "Hello, my name is Gandhi", friend: gandhi, minutesAgo: 60 * 24, context: context)
+
+        let hillary = NSEntityDescription.insertNewObject(forEntityName: "Friend", into: context) as! Friend
+        hillary.name = "Hillary Clinton"
+        hillary.profileImageName = "hillary_profile"
+        
+        createMessage(text: "Good afternoon...", friend: hillary, minutesAgo: 60 * 24 * 13, context: context)
+
+        
         do {
             try context.save()
         } catch let err {

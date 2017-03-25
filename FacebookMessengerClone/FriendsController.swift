@@ -16,7 +16,7 @@ class FriendsController: UICollectionViewController, UICollectionViewDelegateFlo
     var messages: [Message]?
     
     override func viewDidLoad() {
-        super.viewDidLoad()
+        super.viewDidLoad()        
         collectionView?.backgroundColor = .white
         collectionView?.alwaysBounceVertical = true
     

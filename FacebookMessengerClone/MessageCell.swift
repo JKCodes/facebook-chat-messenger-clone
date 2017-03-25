@@ -36,7 +36,16 @@ class MessageCell: BaseCell {
             if let date = message?.date {
 
                 let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = "h:mm a"
+                let elapsedTimeInSeconds = Date().timeIntervalSince(date as Date)
+                let secondsInDays: TimeInterval = 60 * 60 * 24
+                
+                if elapsedTimeInSeconds > 7 * secondsInDays {
+                    dateFormatter.dateFormat = "MM/dd/yy"
+                } else if elapsedTimeInSeconds > secondsInDays {
+                    dateFormatter.dateFormat = "EEE"
+                } else {
+                    dateFormatter.dateFormat = "h:mm a"
+                }
                 
                 timeLabel.text = dateFormatter.string(from: date as Date)
             }
@@ -44,6 +53,14 @@ class MessageCell: BaseCell {
         }
     }
     
+    override var isHighlighted: Bool {
+        didSet {
+            backgroundColor = isHighlighted ? UIColor.rgb(r: 0, g: 134, b: 249) : .white
+            nameLabel.textColor = isHighlighted ? .white : .black
+            timeLabel.textColor = isHighlighted ? .white : .black
+            messageLabel.textColor = isHighlighted ? .white : .black
+        }
+    }
     
     let profileImageView: UIImageView = {
         let imageView = UIImageView()
