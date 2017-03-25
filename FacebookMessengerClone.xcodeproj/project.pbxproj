@@ -14,8 +14,15 @@
 		D80977561E85692F005E1A00 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D80977541E85692F005E1A00 /* LaunchScreen.storyboard */; };
 		D80977631E856A04005E1A00 /* UIColor + rgb.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80977611E856A04005E1A00 /* UIColor + rgb.swift */; };
 		D80977641E856A04005E1A00 /* UIView + Anchors.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80977621E856A04005E1A00 /* UIView + Anchors.swift */; };
-		D80977661E856B89005E1A00 /* FriendsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80977651E856B89005E1A00 /* FriendsCell.swift */; };
+		D80977661E856B89005E1A00 /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80977651E856B89005E1A00 /* MessageCell.swift */; };
 		D80977681E856B93005E1A00 /* BaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80977671E856B93005E1A00 /* BaseCell.swift */; };
+		D8E778EB1E86817500088E25 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E778EA1E86817500088E25 /* Message.swift */; };
+		D8E778ED1E86817E00088E25 /* Friend.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E778EC1E86817E00088E25 /* Friend.swift */; };
+		D8E778EF1E86860600088E25 /* FriendsControllerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E778EE1E86860500088E25 /* FriendsControllerHelper.swift */; };
+		D8E779071E8689CA00088E25 /* Friend+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E779031E8689CA00088E25 /* Friend+CoreDataClass.swift */; };
+		D8E779081E8689CA00088E25 /* Friend+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E779041E8689CA00088E25 /* Friend+CoreDataProperties.swift */; };
+		D8E779091E8689CA00088E25 /* Message+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E779051E8689CA00088E25 /* Message+CoreDataClass.swift */; };
+		D8E7790A1E8689CA00088E25 /* Message+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E779061E8689CA00088E25 /* Message+CoreDataProperties.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,8 +35,15 @@
 		D80977571E85692F005E1A00 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D80977611E856A04005E1A00 /* UIColor + rgb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor + rgb.swift"; sourceTree = "<group>"; };
 		D80977621E856A04005E1A00 /* UIView + Anchors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView + Anchors.swift"; sourceTree = "<group>"; };
-		D80977651E856B89005E1A00 /* FriendsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendsCell.swift; sourceTree = "<group>"; };
+		D80977651E856B89005E1A00 /* MessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageCell.swift; sourceTree = "<group>"; };
 		D80977671E856B93005E1A00 /* BaseCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseCell.swift; sourceTree = "<group>"; };
+		D8E778EA1E86817500088E25 /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		D8E778EC1E86817E00088E25 /* Friend.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Friend.swift; sourceTree = "<group>"; };
+		D8E778EE1E86860500088E25 /* FriendsControllerHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendsControllerHelper.swift; sourceTree = "<group>"; };
+		D8E779031E8689CA00088E25 /* Friend+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Friend+CoreDataClass.swift"; sourceTree = "<group>"; };
+		D8E779041E8689CA00088E25 /* Friend+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Friend+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		D8E779051E8689CA00088E25 /* Message+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Message+CoreDataClass.swift"; sourceTree = "<group>"; };
+		D8E779061E8689CA00088E25 /* Message+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Message+CoreDataProperties.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,7 +100,7 @@
 		D809775E1E8569D5005E1A00 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				D80977651E856B89005E1A00 /* FriendsCell.swift */,
+				D80977651E856B89005E1A00 /* MessageCell.swift */,
 				D80977671E856B93005E1A00 /* BaseCell.swift */,
 			);
 			name = View;
@@ -95,6 +109,12 @@
 		D809775F1E8569D9005E1A00 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				D8E779031E8689CA00088E25 /* Friend+CoreDataClass.swift */,
+				D8E779041E8689CA00088E25 /* Friend+CoreDataProperties.swift */,
+				D8E779051E8689CA00088E25 /* Message+CoreDataClass.swift */,
+				D8E779061E8689CA00088E25 /* Message+CoreDataProperties.swift */,
+				D8E778EA1E86817500088E25 /* Message.swift */,
+				D8E778EC1E86817E00088E25 /* Friend.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -102,6 +122,7 @@
 		D80977601E8569E0005E1A00 /* Protocols and Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				D8E778EE1E86860500088E25 /* FriendsControllerHelper.swift */,
 				D80977611E856A04005E1A00 /* UIColor + rgb.swift */,
 				D80977621E856A04005E1A00 /* UIView + Anchors.swift */,
 			);
@@ -181,12 +202,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				D809774B1E85692F005E1A00 /* FriendsController.swift in Sources */,
-				D80977661E856B89005E1A00 /* FriendsCell.swift in Sources */,
+				D80977661E856B89005E1A00 /* MessageCell.swift in Sources */,
 				D80977631E856A04005E1A00 /* UIColor + rgb.swift in Sources */,
+				D8E779071E8689CA00088E25 /* Friend+CoreDataClass.swift in Sources */,
+				D8E7790A1E8689CA00088E25 /* Message+CoreDataProperties.swift in Sources */,
 				D80977511E85692F005E1A00 /* FacebookMessengerClone.xcdatamodeld in Sources */,
+				D8E779081E8689CA00088E25 /* Friend+CoreDataProperties.swift in Sources */,
 				D80977681E856B93005E1A00 /* BaseCell.swift in Sources */,
+				D8E778EB1E86817500088E25 /* Message.swift in Sources */,
+				D8E779091E8689CA00088E25 /* Message+CoreDataClass.swift in Sources */,
+				D8E778ED1E86817E00088E25 /* Friend.swift in Sources */,
 				D80977641E856A04005E1A00 /* UIView + Anchors.swift in Sources */,
 				D80977491E85692F005E1A00 /* AppDelegate.swift in Sources */,
+				D8E778EF1E86860600088E25 /* FriendsControllerHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -342,6 +370,7 @@
 				D809775C1E85692F005E1A00 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 

@@ -13,24 +13,37 @@ class FriendsController: UICollectionViewController, UICollectionViewDelegateFlo
     private let cellId = "cellId"
     private let cellHeight: CGFloat = 100
     
+    var messages: [Message]?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView?.backgroundColor = .white
         collectionView?.alwaysBounceVertical = true
     
-        collectionView?.register(FriendsCell.self, forCellWithReuseIdentifier: cellId)
+        collectionView?.register(MessageCell.self, forCellWithReuseIdentifier: cellId)
+        
+        setupData()
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 3
+        if let count = messages?.count {
+            return count
+        }
+        
+        return 0
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        return collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! MessageCell
+        
+        if let message = messages?[indexPath.item] {
+            cell.message = message
+        }
+        
+        return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: view.frame.width, height: cellHeight)
     }
 }
-

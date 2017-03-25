@@ -1,5 +1,5 @@
 //
-//  FriendsCell.swift
+//  MessageCell.swift
 //  FacebookMessengerClone
 //
 //  Created by Joseph Kim on 3/24/17.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class FriendsCell: BaseCell {
+class MessageCell: BaseCell {
 
     private static let profileImageCornerRadius: CGFloat = 34
     private static let hasReadImageCornerRadius: CGFloat = 10
@@ -22,10 +22,33 @@ class FriendsCell: BaseCell {
     private let timeLabelWidth: CGFloat = 80
     private let timeLabelHeight: CGFloat = 24
     
+    var message: Message? {
+        didSet{
+            nameLabel.text = message?.friend?.name
+            
+            if let profileImageName = message?.friend?.profileImageName {
+                profileImageView.image = UIImage(named: profileImageName)
+                hasReadImageView.image = UIImage(named: profileImageName)
+            }
+            
+            messageLabel.text = message?.text
+            
+            if let date = message?.date {
+
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "h:mm a"
+                
+                timeLabel.text = dateFormatter.string(from: date as Date)
+            }
+            
+        }
+    }
+    
+    
     let profileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
-        imageView.layer.cornerRadius = FriendsCell.profileImageCornerRadius
+        imageView.layer.cornerRadius = MessageCell.profileImageCornerRadius
         imageView.layer.masksToBounds = true
         imageView.image = #imageLiteral(resourceName: "zuckprofile")
         return imageView
@@ -68,7 +91,7 @@ class FriendsCell: BaseCell {
     let hasReadImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
-        imageView.layer.cornerRadius = FriendsCell.hasReadImageCornerRadius
+        imageView.layer.cornerRadius = MessageCell.hasReadImageCornerRadius
         imageView.layer.masksToBounds = true
         imageView.image = #imageLiteral(resourceName: "zuckprofile")
         return imageView
