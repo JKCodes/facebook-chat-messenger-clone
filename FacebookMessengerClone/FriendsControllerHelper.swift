@@ -55,10 +55,16 @@ extension FriendsController {
         steve.name = "Steve Jobs"
         steve.profileImageName = "steve_profile"
         
-        let message2 = NSEntityDescription.insertNewObject(forEntityName: "Message", into: context) as! Message
-        message2.friend = steve
-        message2.text = "Apple creates great iOS Devices for the world..."
-        message2.date = NSDate()
+        createMessage(text: "Good morning...", friend: steve, minutesAgo: 5, context: context)
+        createMessage(text: "Hello, how are you?", friend: steve, minutesAgo: 4, context: context)
+        createMessage(text: "Do you have an Apple device?", friend: steve, minutesAgo: 3, context: context)
+        createMessage(text: "Apple creates the best devices in the world.", friend: steve, minutesAgo: 2, context: context)
+        
+        let donald = NSEntityDescription.insertNewObject(forEntityName: "Friend", into: context) as! Friend
+        donald.name = "Donald Trump"
+        donald.profileImageName = "donald_trump_profile"
+        
+        createMessage(text: "Hello, I am the the current president of the United States", friend: donald, minutesAgo: 6, context: context)
         
         do {
             try context.save()
@@ -67,13 +73,48 @@ extension FriendsController {
         }
     }
     
+    private func createMessage(text: String, friend: Friend, minutesAgo: Double, context: NSManagedObjectContext) {
+        let message = NSEntityDescription.insertNewObject(forEntityName: "Message", into: context) as! Message
+        message.friend = friend
+        message.text = text
+        message.date = NSDate().addingTimeInterval(-minutesAgo * 60)
+    }
+    
     func loadData(context: NSManagedObjectContext) {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Message")
+        
+        if let friends = fetchFriends(context: context) {
+            
+            messages = [Message]()
+            
+            for friend in friends {
+                guard let name = friend.name else { return }
+
+                let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Message")
+                fetchRequest.sortDescriptors = [NSSortDescriptor(key: "date", ascending: false)]
+                fetchRequest.fetchLimit = 1
+                fetchRequest.predicate = NSPredicate(format: "friend.name = %@", name)
+                
+                do {
+                    if let fetchedMessages = try context.fetch(fetchRequest) as? [Message] {
+                        messages?.append(contentsOf: fetchedMessages)
+                    }
+                } catch let err {
+                    print("\(err)")
+                }
+            }
+            
+            messages = messages?.sorted(by: {$0.date!.compare($1.date! as Date) == .orderedDescending})
+        }
+    }
+    
+    private func fetchFriends(context: NSManagedObjectContext) -> [Friend]? {
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Friend")
         
         do {
-            messages = try context.fetch(fetchRequest) as? [Message]
+            return try context.fetch(request) as? [Friend]
         } catch let err {
             print("\(err)")
+            return nil
         }
     }
     
