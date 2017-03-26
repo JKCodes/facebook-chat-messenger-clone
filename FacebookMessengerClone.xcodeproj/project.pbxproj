@@ -108,7 +108,7 @@
 		D809775E1E8569D5005E1A00 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				D8E7790D1E86BF7E00088E25 /*  Friends Chat Screen */,
+				D8E7790D1E86BF7E00088E25 /* Recent */,
 				D8E7790E1E86BF9C00088E25 /* ChatLogMessageCell.swift */,
 			);
 			name = View;
@@ -137,13 +137,13 @@
 			name = "Protocols and Extensions";
 			sourceTree = "<group>";
 		};
-		D8E7790D1E86BF7E00088E25 /*  Friends Chat Screen */ = {
+		D8E7790D1E86BF7E00088E25 /* Recent */ = {
 			isa = PBXGroup;
 			children = (
 				D80977651E856B89005E1A00 /* MessageCell.swift */,
 				D80977671E856B93005E1A00 /* BaseCell.swift */,
 			);
-			name = " Friends Chat Screen";
+			name = Recent;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
