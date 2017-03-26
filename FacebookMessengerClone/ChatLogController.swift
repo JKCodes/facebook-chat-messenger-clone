@@ -14,7 +14,8 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
     private let defaultCellHeight: CGFloat = 100
     private let cellWidth: CGFloat = 250
     private let contentOffset: CGFloat = 16
-    private let cellLeftPadding: CGFloat = 8
+    private let cellPadding: CGFloat = 8
+    private let cellRightMargin: CGFloat = 16
     
     var friend: Friend? {
         didSet {
@@ -56,13 +57,25 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! ChatLogMessageCell
         cell.messageTextView.text = messages?[indexPath.item].text
         
-        if let messageText = messages?[indexPath.item].text, let profileImageName = messages?[indexPath.item].friend?.profileImageName {
+        if let message = messages?[indexPath.item], let messageText = message.text, let profileImageName = message.friend?.profileImageName, let isSender = message.isSender {
             let estimatedFrame = fittingRect(for: messageText)
-            
-            cell.messageTextView.frame = CGRect(x: ChatLogMessageCell.cellOffset + cellLeftPadding, y: 0, width: estimatedFrame.width + contentOffset, height: estimatedFrame.height + contentOffset)
-            cell.textBubbleView.frame = CGRect(x: ChatLogMessageCell.cellOffset, y: 0, width: estimatedFrame.width + contentOffset + cellLeftPadding, height: estimatedFrame.height + contentOffset)
-
             cell.profileImageView.image = UIImage(named: profileImageName)
+            
+            if !isSender.boolValue {
+                cell.messageTextView.frame = CGRect(x: ChatLogMessageCell.cellOffset + cellPadding, y: 0, width: estimatedFrame.width + contentOffset, height: estimatedFrame.height + contentOffset)
+                cell.textBubbleView.frame = CGRect(x: ChatLogMessageCell.cellOffset - cellPadding, y: 0, width: estimatedFrame.width + contentOffset + cellPadding * 3, height: estimatedFrame.height + contentOffset)
+                cell.profileImageView.isHidden = false
+                cell.bubbleImageView.image = ChatLogMessageCell.grayBubbleImage
+                cell.bubbleImageView.tintColor = UIColor(white: 0.95, alpha: 1)
+                cell.messageTextView.textColor = .black
+            } else {
+                cell.messageTextView.frame = CGRect(x: view.frame.width - estimatedFrame.width  - contentOffset - cellRightMargin - cellPadding, y: 0, width: estimatedFrame.width + contentOffset, height: estimatedFrame.height + contentOffset)
+                cell.textBubbleView.frame = CGRect(x: view.frame.width - estimatedFrame.width - contentOffset - cellPadding * 2 - cellRightMargin, y: 0, width: estimatedFrame.width + contentOffset + cellPadding * 2, height: estimatedFrame.height + contentOffset)
+                cell.profileImageView.isHidden = true
+                cell.bubbleImageView.image = ChatLogMessageCell.blueBubbleImage
+                cell.bubbleImageView.tintColor = UIColor.rgb(r: 0, g: 137, b: 249)
+                cell.messageTextView.textColor = .white
+            }
         }
  
         return cell
