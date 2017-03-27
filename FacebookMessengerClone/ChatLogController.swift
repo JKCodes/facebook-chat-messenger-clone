@@ -16,6 +16,11 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
     private let contentOffset: CGFloat = 16
     private let cellPadding: CGFloat = 8
     private let cellRightMargin: CGFloat = 16
+    private let messageInputContainerHeight: CGFloat = 48
+    private let sendButtonWidth: CGFloat = 60
+    private let topBorderViewHeight: CGFloat = 0.5
+    
+    private var messageInputBottomConstraint: NSLayoutConstraint?
     
     var friend: Friend? {
         didSet {
@@ -27,13 +32,95 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
         }
     }
     
+    let messageInputContainerView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
+        return view
+    }()
+    
+    let inputTextField: UITextField = {
+        let textField = UITextField()
+        textField.placeholder = "Enter message..."
+        return textField
+    }()
+    
+    let sendButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Send", for: .normal)
+        button.setTitleColor(UIColor.rgb(r: 0, g: 137, b: 249), for: .normal)
+        button.titleLabel?.font = .boldSystemFont(ofSize: 16)
+        return button
+    }()
+    
+    let topBorderView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor(white: 0.95, alpha: 1)
+        return view
+    }()
+    
     var messages: [Message]?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        tabBarController?.tabBar.isHidden = true
+        
         collectionView?.backgroundColor = .white
         collectionView?.register(ChatLogMessageCell.self, forCellWithReuseIdentifier: cellId)
+        
+        view.addSubview(messageInputContainerView)
+        
+        messageInputBottomConstraint = messageInputContainerView.anchorAndReturn(top: nil, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, topConstant: 0, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: messageInputContainerHeight)[1]
+
+        
+        setupInputComponents()
+        
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardNotification), name: .UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardNotification), name: .UIKeyboardWillHide, object: nil)
+    }
+    
+    func handleKeyboardNotification(notification: NSNotification) {
+        if let userInfo = notification.userInfo {
+            let keyboardFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as AnyObject).cgRectValue
+            
+            let isKeyboardShowing = notification.name == .UIKeyboardWillShow
+            
+            if let newHeight = keyboardFrame?.height {
+                messageInputBottomConstraint?.constant = isKeyboardShowing ? -newHeight : 0
+            }
+            
+            UIView.animate(withDuration: 0, delay: 0, options: .curveEaseOut, animations: { [weak self] in
+                guard let this = self else { return }
+                
+                this.view.layoutIfNeeded()
+                
+            }, completion: { [weak self] (completed) in
+                guard let this = self, let messageCount = this.messages?.count else { return }
+                
+                if isKeyboardShowing {
+                    let indexPath = IndexPath(item: messageCount - 1, section: 0)
+                    this.collectionView?.scrollToItem(at: indexPath, at: .bottom, animated: true)
+                }
+            })
+        }
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        inputTextField.endEditing(true)
+        
+        
+    }
+    
+    private func setupInputComponents() {
+        messageInputContainerView.addSubview(inputTextField)
+        messageInputContainerView.addSubview(sendButton)
+        messageInputContainerView.addSubview(topBorderView)
+
+        topBorderView.anchor(top: messageInputContainerView.topAnchor, left: messageInputContainerView.leftAnchor, bottom: nil, right: messageInputContainerView.rightAnchor, topConstant: 0, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: topBorderViewHeight)
+        inputTextField.anchor(top: topBorderView.bottomAnchor, left: topBorderView.leftAnchor, bottom: messageInputContainerView.bottomAnchor, right: nil, topConstant: 0, leftConstant: cellPadding, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 0)
+        sendButton.anchor(top: inputTextField.topAnchor, left: inputTextField.rightAnchor, bottom: inputTextField.bottomAnchor, right: messageInputContainerView.rightAnchor, topConstant: 0, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: sendButtonWidth, heightConstant: 0)
+        
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

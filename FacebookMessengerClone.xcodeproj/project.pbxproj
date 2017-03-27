@@ -109,7 +109,7 @@
 			isa = PBXGroup;
 			children = (
 				D8E7790D1E86BF7E00088E25 /* Recent */,
-				D8E7790E1E86BF9C00088E25 /* ChatLogMessageCell.swift */,
+				D8B6E3ED1E893E4500DF1043 /* Chat Log */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -135,6 +135,14 @@
 				D80977621E856A04005E1A00 /* UIView + Anchors.swift */,
 			);
 			name = "Protocols and Extensions";
+			sourceTree = "<group>";
+		};
+		D8B6E3ED1E893E4500DF1043 /* Chat Log */ = {
+			isa = PBXGroup;
+			children = (
+				D8E7790E1E86BF9C00088E25 /* ChatLogMessageCell.swift */,
+			);
+			name = "Chat Log";
 			sourceTree = "<group>";
 		};
 		D8E7790D1E86BF7E00088E25 /* Recent */ = {
