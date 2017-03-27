@@ -106,8 +106,8 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
         guard let friend = friend else { return }
 
         let context = (UIApplication.shared.delegate as! AppDelegate).getContext()
-        FriendsController.createMessage(text: "An automated message from two minutes ago", friend: friend, minutesAgo: 2, context: context)
         FriendsController.createMessage(text: "An automated message from one minute ago", friend: friend, minutesAgo: 1, context: context)
+        FriendsController.createMessage(text: "An automated message from just now", friend: friend, minutesAgo: 0, context: context)
         
         do {
             try context.save()

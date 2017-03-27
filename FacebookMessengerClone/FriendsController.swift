@@ -7,13 +7,25 @@
 //
 
 import UIKit
+import CoreData
 
-class FriendsController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
+class FriendsController: UICollectionViewController, UICollectionViewDelegateFlowLayout, NSFetchedResultsControllerDelegate {
 
     private let cellId = "cellId"
     private let cellHeight: CGFloat = 100
     
-    var messages: [Message]?
+    lazy var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult> = { [weak self] in
+        guard let this = self else { return NSFetchedResultsController<NSFetchRequestResult>() }
+        
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Friend")
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "lastMessage.date", ascending: false)]
+        fetchRequest.predicate = NSPredicate(format: "lastMessage != nil")
+        let context = (UIApplication.shared.delegate as! AppDelegate).getContext()
+        let frc = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+        frc.delegate = this
+        return frc
+    }()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()        
@@ -21,8 +33,28 @@ class FriendsController: UICollectionViewController, UICollectionViewDelegateFlo
         collectionView?.alwaysBounceVertical = true
     
         collectionView?.register(MessageCell.self, forCellWithReuseIdentifier: cellId)
+
+        do {
+            try fetchedResultsController.performFetch()
+        } catch let err {
+            print("\(err)")
+        }
         
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Reset chat data", style: .plain, target: self, action: #selector(resetData))
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        if let count = fetchedResultsController.sections?[0].numberOfObjects {
+            if count == 0 { setupData() }
+        }
+    }
+    
+    func resetData() {
         setupData()
+    }
+    
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        collectionView?.reloadData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -32,7 +64,8 @@ class FriendsController: UICollectionViewController, UICollectionViewDelegateFlo
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if let count = messages?.count {
+        
+        if let count = fetchedResultsController.sections?[section].numberOfObjects {
             return count
         }
         
@@ -42,9 +75,9 @@ class FriendsController: UICollectionViewController, UICollectionViewDelegateFlo
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! MessageCell
         
-        if let message = messages?[indexPath.item] {
-            cell.message = message
-        }
+        let friend = fetchedResultsController.object(at: indexPath) as! Friend
+        
+        cell.message = friend.lastMessage
         
         return cell
     }
@@ -56,7 +89,10 @@ class FriendsController: UICollectionViewController, UICollectionViewDelegateFlo
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let layout = UICollectionViewFlowLayout()
         let controller = ChatLogController(collectionViewLayout: layout)
-        controller.friend = messages?[indexPath.item].friend
+        
+        let friend = fetchedResultsController.object(at: indexPath) as! Friend
+
+        controller.friend = friend
         navigationController?.pushViewController(controller, animated: true)
     }
 }

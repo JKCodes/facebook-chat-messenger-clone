@@ -10,14 +10,13 @@ import UIKit
 import CoreData
 
 extension FriendsController {
-
+    
     func setupData() {
         
         guard let context = (UIApplication.shared.delegate as? AppDelegate)?.getContext() else { return }
         
         clearData(context: context)
         createData(context: context)
-        loadData(context: context)
     }
     
     func clearData(context: NSManagedObjectContext) {
@@ -122,34 +121,10 @@ extension FriendsController {
         message.text = text
         message.date = NSDate().addingTimeInterval(-minutesAgo * 60)
         message.isSender = NSNumber(value: isSender)
+        
+        friend.lastMessage = message
     }
     
-    func loadData(context: NSManagedObjectContext) {
-        
-        if let friends = fetchFriends(context: context) {
-            
-            messages = [Message]()
-            
-            for friend in friends {
-                guard let name = friend.name else { return }
-
-                let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Message")
-                fetchRequest.sortDescriptors = [NSSortDescriptor(key: "date", ascending: false)]
-                fetchRequest.fetchLimit = 1
-                fetchRequest.predicate = NSPredicate(format: "friend.name = %@", name)
-                
-                do {
-                    if let fetchedMessages = try context.fetch(fetchRequest) as? [Message] {
-                        messages?.append(contentsOf: fetchedMessages)
-                    }
-                } catch let err {
-                    print("\(err)")
-                }
-            }
-            
-            messages = messages?.sorted(by: {$0.date!.compare($1.date! as Date) == .orderedDescending})
-        }
-    }
     
     private func fetchFriends(context: NSManagedObjectContext) -> [Friend]? {
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Friend")
